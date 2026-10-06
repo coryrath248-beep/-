@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper]{ctexart}
+\documentclass[12pt,a4paper]{ctexart}
 \usepackage[margin=2.4cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
@@ -16,6 +16,13 @@
 \captionsetup{font=small}
 \setlength{\parskip}{0.35em}
 
+% 标题分级样式：一级/二级/三级标题用黑体加粗，字号递减
+\ctexset{
+  section = { format = {\zihao{3}\heiti\bfseries} },
+  subsection = { format = {\zihao{4}\heiti\bfseries} },
+  subsubsection = { format = {\zihao{-4}\heiti\bfseries} },
+}
+
 \lstset{
   basicstyle=\ttfamily\footnotesize,
   breaklines=true,
@@ -29,12 +36,11 @@
   belowskip=0.8em,
 }
 
-\title{2026 运筹与优化团队招新考核题 作答}
-\author{姓名：兰囿颉}
-\date{}
-
 \begin{document}
-\maketitle
+\begin{center}
+{\zihao{2}\heiti\bfseries 2026 运筹与优化团队招新考核题 作答}\par
+\vspace{0.6em}
+\end{center}
 
 \section{一、问答题（必做）}
 

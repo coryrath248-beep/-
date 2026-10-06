@@ -1,3 +1,12 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# LaTeX 编译中间文件
+*.aux
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.fls
+*.fdb_latexmk
