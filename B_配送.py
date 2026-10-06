@@ -210,20 +210,35 @@ def plot_routes(routes, nodes, out="B_路线图.png"):
         import matplotlib
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
+        from matplotlib import font_manager
 
-        fig, ax = plt.subplots(figsize=(9, 9))
-        ax.scatter([DEPOT[1]], [DEPOT[2]], c="red", marker="s", s=110, zorder=5, label="Depot")
-        for r in routes:
+        # 尽量使用中文字体，避免中文显示成方框
+        for fname in ["Microsoft YaHei", "SimHei", "SimSun"]:
+            try:
+                font_manager.findfont(fname, fallback_to_default=False)
+                plt.rcParams["font.sans-serif"] = [fname]
+                break
+            except Exception:
+                continue
+        plt.rcParams["axes.unicode_minus"] = False
+
+        total = sum(route_length(r, nodes) for r in routes)
+        fig, ax = plt.subplots(figsize=(8.5, 8.5))
+        colors = plt.cm.tab10.colors
+        ax.scatter([DEPOT[1]], [DEPOT[2]], c="red", marker="s", s=130, zorder=5, label="仓库")
+        for k, r in enumerate(routes):
             xs = [nodes[i][1] for i in r]
             ys = [nodes[i][2] for i in r]
-            ax.plot(xs, ys, marker="o", linewidth=1.5)
+            ax.plot(xs, ys, marker="o", markersize=5, linewidth=1.6,
+                    color=colors[k % 10], label=f"车辆 {k + 1}")
         for c in CUSTOMERS:
-            ax.annotate(str(c[0]), (c[1], c[2]), fontsize=7, ha="center", va="center")
-        ax.set_title("Vehicle Routes (CVRP, capacity=50)")
-        ax.set_xlabel("x (km)")
-        ax.set_ylabel("y (km)")
-        ax.legend()
+            ax.annotate(str(c[0]), (c[1], c[2]), fontsize=8, ha="center", va="center")
+        ax.set_title(f"冷链配送车辆路径方案（{len(routes)} 辆车，总里程约 {total:.0f} km）", fontsize=13)
+        ax.set_xlabel("x 坐标 (km)")
+        ax.set_ylabel("y 坐标 (km)")
+        ax.legend(fontsize=8, ncol=2, loc="best")
         ax.grid(True, alpha=0.3)
+        fig.tight_layout()
         fig.savefig(out, dpi=150)
         plt.close(fig)
     except Exception as e:  # 绘图失败不影响主流程
